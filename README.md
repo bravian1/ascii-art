@@ -9,7 +9,7 @@ The ASCII Art is a Go program designed to convert strings into graphical represe
 Clone the repository and navigate to the project directory:
 
 ```bash
-git clone https://learn.zone01kisumu.ke/git/bnyatoro/ascii-art
+https://github.com/bravianbazu/ascii-art.git
 cd ascii-art
 ```
 
