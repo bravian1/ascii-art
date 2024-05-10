@@ -28,7 +28,9 @@ func CreateAlphabet(filename string) (bool, map[rune][]string) {
 	alphabet := make(map[rune][]string)
 	var letter rune = ' '
 	var count int
+	lines := 0
 	for scanner.Scan() {
+		lines++
 		if count != CHARACTER_HEIGHT {
 			alphabet[letter] = append(alphabet[letter], scanner.Text())
 			count++
@@ -44,6 +46,9 @@ func CreateAlphabet(filename string) (bool, map[rune][]string) {
 	// does the alphabet created from the file contain all the allowed characters
 	if len(alphabet) != NUMOFASCII_XTERS {
 		fmt.Printf("[Error] Expected %d but got %d characters in the alphabet. Ensure you have the correct ascii art file\n", NUMOFASCII_XTERS, len(alphabet))
+		os.Exit(0)
+	} else if lines != NUMOFLINESINBANNER {
+		fmt.Printf("[Error] Expected %d but got %d lines in the banner file. Ensure you have the correct ascii art file length\n", NUMOFLINESINBANNER, lines)
 		os.Exit(0)
 	}
 	return true, alphabet

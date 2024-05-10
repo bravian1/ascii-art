@@ -1,11 +1,12 @@
 package main
 
 import (
-	"os"
-
 	"ascii-art/asciiart"
+	"os"
 )
 
+
 func main() {
+	
 	asciiart.Run(os.Args)
 }

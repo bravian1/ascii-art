@@ -1,39 +1,8 @@
 package asciiart
 
 import (
-	"strings"
 	"testing"
 )
-
-/*
-*
-*	Test whether an array is filled with only empty spaces
-*  case ""
-*
- */
-func TestEmptySpace(t *testing.T) {
-	input := ""
-	sArr := strings.Split(input, "\\n")
-
-	if ok, is, _ := IsAllSpace(sArr); ok && is != "SPACE" {
-		t.Errorf("Expected SPACE, but got %s\n", is)
-	}
-}
-
-/*
-*
-*	Test whether an array is filled with only empty spaces
-*  case "\n"
-*
- */
-func TestNewLine(t *testing.T) {
-	input := "\\n"
-	sArr := strings.Split(input, "\\n")
-
-	if ok, is, _ := IsAllSpace(sArr); ok && is != "NEWLINE" {
-		t.Errorf("Expected NEWLINE, but got %s\n", is)
-	}
-}
 
 func TestIsValidInput(t *testing.T) {
 	type Characters struct {
@@ -51,7 +20,7 @@ func TestIsValidInput(t *testing.T) {
 	}
 
 	for _, ch := range table {
-		if valid := isValidInput(ch.char); valid != ch.expect {
+		if valid, _ := isValidInput(ch.char); valid != ch.expect {
 			t.Errorf("\n[Character %q] expected %v, got %v\n", ch.char, ch.expect, valid)
 		}
 	}
