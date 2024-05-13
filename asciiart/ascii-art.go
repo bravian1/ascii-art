@@ -51,6 +51,25 @@ func printAsciiWithColor(word string, alphabet map[rune][]string, color string, 
 		fmt.Println(lineOutput)
 	}
 }
+func printAsciiWithColor2(word string, alphabet map[rune][]string, color string, target string) {
+	for i := 0; i < CHARACTER_HEIGHT; i++ {
+		lineOutput := ""
+		for _, l := range word {
+			switch l {
+			case '\n':
+				fmt.Println()
+			default:
+				line := alphabet[rune(l)][i]
+				
+					lineOutput += color + line + Reset
+			
+					lineOutput += line
+				}
+			}
+	
+		fmt.Println(lineOutput)
+	}
+}
 
 // shouldColor determines if a letter should be colored
 func shouldColor(letter rune, target string) bool {
@@ -58,6 +77,9 @@ func shouldColor(letter rune, target string) bool {
 		return true
 	}
 	return strings.ContainsRune(target, letter)
+}
+func shouldColorWord(word string, target string) bool {
+	return strings.Contains(word, target)
 }
 
 
@@ -116,8 +138,12 @@ func Run(arr []string) {
 							fmt.Println()
 					} else {
 							if colorFlag != "" {
+								if shouldColorWord(word, colorTarget){
+									printAsciiWithColor2(word, alphabet, colorCodes[colorFlag], colorTarget)
+									
+									}else{ 
 									printAsciiWithColor(word, alphabet, colorCodes[colorFlag], colorTarget)
-							} else {
+							}}else {
 									printAscii(word, alphabet)
 							}
 					}
