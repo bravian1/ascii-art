@@ -2,6 +2,10 @@ package asciiart
 
 import (
 	"fmt"
+	"log"
+	"os"
+	"os/exec"
+	"strconv"
 	"strings"
 )
 
@@ -46,10 +50,32 @@ func printAscii(word string, alphabet map[rune][]string) {
 				lineOutput += alphabet[rune(l)][i]
 			}
 		}
-		fmt.Println(lineOutput)
+padding:=getsize(lineOutput)
+
+f:=strings.Repeat(" ",padding)+lineOutput
+		//fmt.Printf(fmt.Sprintf("%%-%ds", w/2), fmt.Sprintf(fmt.Sprintf("%%%ds", w), lineOutput))
+		fmt.Println(f)
 	}
 }
-
+func getsize(v string)(int){
+	cmd := exec.Command("stty", "size")
+	cmd.Stdin = os.Stdin
+	output, err := cmd.Output()
+	if err != nil {
+		log.Fatal(err)
+	}
+	s := string(output)
+	ss := strings.Split(s, " ")
+	w, err := strconv.Atoi(strings.Trim(ss[1], "\n"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	padding:=(w-len(v))/2
+if padding<0{
+	padding=0
+}
+	return padding
+}
 /*
 * Processes the input array and extracts whatever the program needs
 * It is also responsible of dealing with optional parameters like the file names

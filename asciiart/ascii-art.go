@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-
+//echo -e "lines\ncols" | tput -S for getting terminal width and height
 
 const (
 	CHARACTER_HEIGHT   = 8
@@ -26,7 +26,7 @@ var (
 		"magenta": "\033[35m",
 		"cyan":    "\033[36m",
 		"white":   "\033[37m",
-		"orange": "\033[38;5;208m",
+		"orange":  "\033[38;5;208m",
 		"reset":   "\033[0m",
 	}
 )
@@ -51,25 +51,6 @@ func printAsciiWithColor(word string, alphabet map[rune][]string, color string, 
 		fmt.Println(lineOutput)
 	}
 }
-func printAsciiWithColor2(word string, alphabet map[rune][]string, color string, target string) {
-	for i := 0; i < CHARACTER_HEIGHT; i++ {
-		lineOutput := ""
-		for _, l := range word {
-			switch l {
-			case '\n':
-				fmt.Println()
-			default:
-				line := alphabet[rune(l)][i]
-				
-					lineOutput += color + line + Reset
-			
-					lineOutput += line
-				}
-			}
-	
-		fmt.Println(lineOutput)
-	}
-}
 
 // shouldColor determines if a letter should be colored
 func shouldColor(letter rune, target string) bool {
@@ -78,78 +59,72 @@ func shouldColor(letter rune, target string) bool {
 	}
 	return strings.ContainsRune(target, letter)
 }
-func shouldColorWord(word string, target string) bool {
-	return strings.Contains(word, target)
-}
-
 
 // Run processes an array of strings to generate ASCII art from a specified file.
 func Run(arr []string) {
 	if len(arr) < 2 {
-			printUsageMessageAndExit()
-			return
+		printUsageMessageAndExit()
+		return
 	}
 
 	var colorFlag, colorTarget, inputString string
 	if strings.HasPrefix(arr[1], "--color=") {
-			colorFlag = strings.TrimPrefix(arr[1], "--color=")
-			if len(arr) > 3 {
-					colorTarget = arr[2]
-					inputString = arr[3]
-			} else if len(arr) == 3 {
-					inputString = arr[2]
-			} else {
-					printUsageMessageAndExit()
-			}
+		colorFlag = strings.TrimPrefix(arr[1], "--color=")
+		if len(arr) > 3 {
+			colorTarget = arr[2]
+			inputString = arr[3]
+		} else if len(arr) == 3 {
+			inputString = arr[2]
+		} else {
+			printUsageMessageAndExit()
+		}
 	} else {
-			inputString = arr[1]
+		inputString = arr[1]
 	}
 
 	processed, filename := processInput(arr)
 	if !processed {
-			printUsageMessageAndExit()
-			return
+		printUsageMessageAndExit()
+		return
 	}
 
 	args := replaceSpecialcharacters(inputString)
 	args = processBackspace(args)
 
 	if valid, xter := isValidInput(args); !valid {
-			fmt.Printf("[Error] Input contains unacceptable character %q\n", xter)
-			return
+		fmt.Printf("[Error] Input contains unacceptable character %q\n", xter)
+		return
 	}
 
 	if args == "\\n" {
-			fmt.Println()
-			return
+		fmt.Println()
+		return
 	} else if args == "" {
-			return
+		return
 	} else {
-			input := strings.Split(args, "\\n")
-			created, alphabet := CreateAlphabet(filename)
-			if !created {
-					fmt.Printf("Could not create the alphabet. Are you sure %s exists and is a valid ascii file?\n", filename)
-					os.Exit(0)
-			}
+		input := strings.Split(args, "\\n")
+		created, alphabet := CreateAlphabet(filename)
+		if !created {
+			fmt.Printf("Could not create the alphabet. Are you sure %s exists and is a valid ascii file?\n", filename)
+			os.Exit(0)
+		}
 
-			// Process input and print
-			for _, word := range input {
-					if word == "" {
-							fmt.Println()
-					} else {
-							if colorFlag != "" {
-								if shouldColorWord(word, colorTarget){
-									printAsciiWithColor2(word, alphabet, colorCodes[colorFlag], colorTarget)
-									
-									}else{ 
-									printAsciiWithColor(word, alphabet, colorCodes[colorFlag], colorTarget)
-							}}else {
-									printAscii(word, alphabet)
-							}
-					}
+		// Process input and print
+		for _, word := range input {
+			if word == "" {
+				fmt.Println()
+			} else {
+				if colorFlag != "" {
+
+					printAsciiWithColor(word, alphabet, colorCodes[colorFlag], colorTarget)
+				} else {
+					printAscii(word, alphabet)
+				}
 			}
+		}
 	}
 }
+
 // printUsageMessageAndExit prints the usage message and exits
 func printUsageMessageAndExit() {
 	fmt.Println(`Usage: go run . [OPTION] [STRING]
