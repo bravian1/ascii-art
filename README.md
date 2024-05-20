@@ -21,6 +21,7 @@ Run the program as shown in the usage section.
 - Supports multiple banner formats including `shadow`, `standard`, and `thinkertoy`.
 - Allows output customization using the `--color` flag.
 
+
 ## Limitations
 - The program is designed to work with printable ASCII characters only.
 - Characters outside the range of space (` `) to tilde (`~`) are not supported and may not render correctly.
