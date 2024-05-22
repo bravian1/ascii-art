@@ -59,8 +59,7 @@ func Run(arr []string) {
 			} else {
 				if flagtype =="right" || flagtype == "center" || flagtype == "left" || flagtype == "justify"{
 						printAsciiJustify(word, alphabet, flagtype)
-				}else if flagtype != "" {
-
+				} else if flagtype != "" {
 					printAsciiWithColor(word, alphabet, colorCodes[flagtype], target)
 				} else {
 					printAscii(word, alphabet)
@@ -72,8 +71,10 @@ func Run(arr []string) {
 
 // printUsageMessageAndExit prints the usage message and exits
 func printUsageMessageAndExit() {
-	fmt.Println(`Usage: go run . [OPTION] [STRING]
-EX: go run . --color=<color> <letters to be colored> "something"`)
+	fmt.Println(`
+		Usage: go run . [OPTION] [STRING]
+		EX: go run . --color=<color> <letters to be colored> "something" Or go run . --align=<align> "something"
+	`)
 	os.Exit(1)
 }
 

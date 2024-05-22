@@ -6,6 +6,5 @@ import (
 )
 
 func main() {
-
 	asciiart.Run(os.Args)
 }
